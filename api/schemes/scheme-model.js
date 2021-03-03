@@ -133,6 +133,30 @@ function findSteps(scheme_id) { // EXERCISE C
         }
       ]
   */
+  const thePromise = new Promise((resolve, reject) => {
+    const array = dbConfig('schemes')
+      .select('steps.step_id', 'steps.step_number', 'steps.instructions','schemes.scheme_name').from('schemes')
+      .leftJoin('steps', 'schemes.scheme_id', 'steps.scheme_id')
+      .where('schemes.scheme_id', scheme_id)
+      .orderBy('steps.step_number', 'asc')
+    .then((res) => {
+      if(res.length === 0)
+        resolve(null);
+      else if(res[0].step_id !== null)
+        resolve (res);
+      else
+        resolve ([]);
+    })
+  })
+  return thePromise;
+/*
+ return dbConfig('schemes')
+  .select('steps.step_id', 'steps.step_number', 'steps.instructions','schemes.scheme_name').from('schemes')
+  .leftJoin('steps', 'schemes.scheme_id', 'steps.scheme_id')
+  .where('schemes.scheme_id', scheme_id)
+  .orderBy('steps.step_number', 'asc')
+*/
+  
 }
 
 function add(scheme) { // EXERCISE D
