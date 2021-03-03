@@ -34,7 +34,9 @@ function findById(scheme_id) { // EXERCISE B .select().from('steps')
       .where('schemes.scheme_id', scheme_id)
       .orderBy('steps.step_number', 'asc')
     .then((res) => {
-      if(res[0].step_id !== null)
+      if(res.length === 0)
+        resolve(null);
+      else if(res[0].step_id !== null)
         resolve ({"scheme_id" : scheme_id, "scheme_name" : res[0].scheme_name , steps : res.map(({scheme_id, scheme_name, ...keepAttrs}) => keepAttrs)});
       else
         resolve ({"scheme_id" : scheme_id, "scheme_name" : res[0].scheme_name , steps : []});
