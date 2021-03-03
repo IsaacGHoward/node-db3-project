@@ -159,10 +159,16 @@ function findSteps(scheme_id) { // EXERCISE C
   
 }
 
-function add(scheme) { // EXERCISE D
+const add = async scheme => { // EXERCISE D
   /*
     1D- This function creates a new scheme and resolves to _the newly created scheme_.
   */
+ await dbConfig('schemes')
+    .insert(scheme)
+    .then(ids => {
+      findById(ids[0])
+      .then((res) => {return res})
+    });
 }
 
 function addStep(scheme_id, step) { // EXERCISE E
@@ -171,6 +177,11 @@ function addStep(scheme_id, step) { // EXERCISE E
     and resolves to _all the steps_ belonging to the given `scheme_id`,
     including the newly created one.
   */
+ dbConfig('steps')
+  .insert({...step, scheme_id})
+  .then(() => {
+    return findSteps(scheme_id)
+  })
 }
 
 module.exports = {

@@ -27,7 +27,12 @@ const checkSchemeId = (req, res, next) => {
   }
 */
 const validateScheme = (req, res, next) => {
-
+  const scheme = req.body;
+  console.log(scheme.scheme_name);
+  if(!scheme.scheme_name || scheme.scheme_name === "" || typeof(scheme.scheme_name) !== "string" )
+    res.status(400).send({"message":"invalid scheme_name"});
+  else
+    next();
 }
 
 /*
@@ -40,7 +45,11 @@ const validateScheme = (req, res, next) => {
   }
 */
 const validateStep = (req, res, next) => {
-
+  const step = req.body;
+  if(!step.instructions || step.instructions === "" || typeof(step.instructions) !== "string" || step.step_number < 1 || typeof(step.step_number) !== "number" )
+    res.status(400).send({"message":"invalid step"});
+  else 
+    next();
 }
 
 module.exports = {
